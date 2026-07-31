@@ -13,6 +13,9 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { useUser } from "@/lib/AuthContext";
 import axiosInstance from "@/lib/axiosinstance";
+import { Button } from "./ui/button";
+import Link from "next/link";
+import { Crown } from "lucide-react";
 
 const VideoInfo = ({ video }: any) => {
   const [likes, setlikes] = useState(video.Like || 0);
@@ -26,6 +29,7 @@ const VideoInfo = ({ video }: any) => {
   const [downloadMessage, setDownloadMessage] = useState("");
 
   const { user } = useUser();
+  const currentPlan = user?.plan || "free";
 
   useEffect(() => {
     setlikes(video.Like || 0);
@@ -177,6 +181,23 @@ const VideoInfo = ({ video }: any) => {
       <h1 className="text-xl font-semibold">
         {video.videotitle}
       </h1>
+      <div className="flex items-center gap-3 mt-2">
+  <span className="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm font-medium">
+    Current Plan: {currentPlan.toUpperCase()}
+  </span>
+
+  {currentPlan === "free" && (
+    <Link href="/subscription">
+      <Button
+        size="sm"
+        className="bg-yellow-500 hover:bg-yellow-600"
+      >
+        <Crown className="w-4 h-4 mr-2" />
+        Upgrade Plan
+      </Button>
+    </Link>
+  )}
+</div>
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
